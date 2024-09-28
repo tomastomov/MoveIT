@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoveIT", "MoveIT\MoveIT.csproj", "{9FD84092-BBD4-4C87-9CDF-11C2EFFE33EF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MoveIT", "MoveIT\MoveIT.csproj", "{9FD84092-BBD4-4C87-9CDF-11C2EFFE33EF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MoveIT.Common", "MoveIT.Common\MoveIT.Common.csproj", "{4A4ABDC4-DA5B-49A3-8F99-012C152ADE3D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MoveIT.Gateways", "MoveIT.Gateways\MoveIT.Gateways.csproj", "{1AB793BF-FB4B-4280-B39F-B85E5F98E9BC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,14 @@ Global
 		{9FD84092-BBD4-4C87-9CDF-11C2EFFE33EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9FD84092-BBD4-4C87-9CDF-11C2EFFE33EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9FD84092-BBD4-4C87-9CDF-11C2EFFE33EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A4ABDC4-DA5B-49A3-8F99-012C152ADE3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A4ABDC4-DA5B-49A3-8F99-012C152ADE3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A4ABDC4-DA5B-49A3-8F99-012C152ADE3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A4ABDC4-DA5B-49A3-8F99-012C152ADE3D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1AB793BF-FB4B-4280-B39F-B85E5F98E9BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1AB793BF-FB4B-4280-B39F-B85E5F98E9BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1AB793BF-FB4B-4280-B39F-B85E5F98E9BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1AB793BF-FB4B-4280-B39F-B85E5F98E9BC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
