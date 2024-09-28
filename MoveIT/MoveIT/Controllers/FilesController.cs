@@ -2,11 +2,10 @@
 
 namespace MoveIT.Controllers
 {
-    [Route("files")]
     public class FilesController : Controller
     {
         [HttpGet]
-        public async Task<IActionResult> Upload()
+        public IActionResult Upload()
         {
             return View();
         }
