@@ -19,7 +19,7 @@ namespace MoveIT.Gateways
             _options = options;
         }
 
-        public async Task<string> LoginAsync(string username)
+        public async Task<string> Login(string username)
         {
             var client = _httpClientFactory.CreateClient();
 

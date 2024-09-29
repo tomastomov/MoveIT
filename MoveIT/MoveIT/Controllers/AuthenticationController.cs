@@ -29,7 +29,7 @@ namespace MoveIT.Controllers
                 return BadRequest(ModelState);
             }
 
-            var token = await _gateway.LoginAsync(model.Username);
+            var token = await _gateway.Login(model.Username);
 
             if (token is null)
             {

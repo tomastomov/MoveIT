@@ -2,6 +2,6 @@
 {
     public interface IMoveITGateway
     {
-        Task<string> LoginAsync(string username);
+        Task<string> Login(string username);
     }
 }

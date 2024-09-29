@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MoveIT.Gateways\MoveIT.Gateways.csproj" />
+    <ProjectReference Include="..\MoveIT.Services\MoveIT.Services.csproj" />
   </ItemGroup>
 
 </Project>
