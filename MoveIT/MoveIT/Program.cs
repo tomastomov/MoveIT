@@ -1,6 +1,8 @@
 using MoveIT.Gateways;
 using MoveIT.Gateways.Contracts;
 using MoveIT.Gateways.Contracts.Models;
+using MoveIT.Services;
+using MoveIT.Services.Contracts;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +12,7 @@ builder.Services.AddRazorPages();
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpClient();
 builder.Services.AddTransient<IMoveITGateway, MoveITGateway>();
+builder.Services.AddTransient<IFileService, FileService>();
 builder.Services.Configure<MoveITOptions>(builder.Configuration.GetSection("MoveIT"));
 
 var app = builder.Build();

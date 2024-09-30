@@ -4,5 +4,6 @@
     {
         public const string APPLICATION_JSON = "application/json";
         public const string JWT = "JWT";
+        public const string BEARER = "BEARER";
     }
 }
