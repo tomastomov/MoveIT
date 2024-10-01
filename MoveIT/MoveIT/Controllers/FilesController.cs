@@ -32,15 +32,21 @@ namespace MoveIT.Controllers
                 return View(model);
             }
 
-            await _fileService.Upload(async () =>
+            var result = await _fileService.Upload(async () =>
             {
                 using var memoryStream = new MemoryStream();
                 await model.File.CopyToAsync(memoryStream);
                 return (memoryStream.ToArray(), model.File.FileName);
             }, _options.Value.BASE_FOLDER_ID);
 
-            TempData[SUCCESS_MESSAGE] = FILE_UPLOADED_SUCCESSFULLY_MESSAGE;
-
+            if (result.ErrorMessage is not null)
+            {
+                TempData[ERROR_MESSAGE] = result.ErrorMessage;
+            } else
+            {
+                TempData[SUCCESS_MESSAGE] = FILE_UPLOADED_SUCCESSFULLY_MESSAGE;
+            }
+            
             return View();
         }
     }

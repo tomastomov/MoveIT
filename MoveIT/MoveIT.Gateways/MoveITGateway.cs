@@ -65,14 +65,21 @@ namespace MoveIT.Gateways
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(BEARER, token.AccessToken);
             }
 
-            var response = await client.PostAsync(url, request);
-
-            if (!response.IsSuccessStatusCode)
+            try
             {
-                return Result.ToVoidError(response.StatusCode.ToMessage());
-            }
+                var response = await client.PostAsync(url, request);
 
-            return Result.ToEmptyResult();
+                if (!response.IsSuccessStatusCode)
+                {
+                    return Result.ToVoidError(response.StatusCode.ToMessage());
+                }
+
+                return Result.ToEmptyResult();
+            }
+            catch (Exception e)
+            {
+                return Result.ToVoidError(HttpStatusCode.InternalServerError.ToMessage());
+            }
         }
 
         private async Task<Result<AuthenticationResponseModel>> AuthenticateImpl(List<KeyValuePair<string, string>> formData)
@@ -81,18 +88,24 @@ namespace MoveIT.Gateways
 
             var content = new FormUrlEncodedContent(formData);
 
-            var response = await client.PostAsync(_options.Value.AUTH_URL, content);
-
-            if (!response.IsSuccessStatusCode)
+            try
             {
-                return Result<AuthenticationResponseModel>.ToError(response.StatusCode.ToMessage());
+                var response = await client.PostAsync(_options.Value.AUTH_URL, content);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    return Result<AuthenticationResponseModel>.ToError(response.StatusCode.ToMessage());
+                }
+
+                var responseContent = await response.Content.ReadAsStringAsync();
+
+                var result = JsonConvert.DeserializeObject<AuthenticationResponseModel>(responseContent);
+
+                return Result<AuthenticationResponseModel>.ToResult(result);
+            } catch (Exception e)
+            {
+                return Result<AuthenticationResponseModel>.ToError(HttpStatusCode.InternalServerError.ToMessage());
             }
-
-            var responseContent = await response.Content.ReadAsStringAsync();
-
-            var result = JsonConvert.DeserializeObject<AuthenticationResponseModel>(responseContent);
-
-            return Result<AuthenticationResponseModel>.ToResult(result);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using MoveIT.Gateways.Contracts;
+﻿using MoveIT.Common.Helpers;
+using MoveIT.Gateways.Contracts;
 using MoveIT.Services.Contracts;
 
 namespace MoveIT.Services
@@ -12,13 +13,11 @@ namespace MoveIT.Services
             _gateway = gateway;
         }
 
-        public async Task Upload(Func<Task<(byte[] File, string FileName)>> fileReader, int directoryId)
+        public async Task<Result> Upload(Func<Task<(byte[] File, string FileName)>> fileReader, int directoryId)
         {
             var fileInfo = await fileReader();
 
-            await _gateway.UploadFileToDirectory(fileInfo.File, fileInfo.FileName, directoryId);
-
-            return;
+            return await _gateway.UploadFileToDirectory(fileInfo.File, fileInfo.FileName, directoryId);
         }
     }
 }
