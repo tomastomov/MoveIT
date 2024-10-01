@@ -19,10 +19,10 @@
                         </div>
                     </form>
 
-                    @if (ViewBag.Message != null)
+                    @if (TempData.TryGetValue(SUCCESS_MESSAGE, out var msg))
                     {
                         <div class="alert alert-info mt-3">
-                            @ViewBag.Message
+                            @msg
                         </div>
                     }
                 </div>

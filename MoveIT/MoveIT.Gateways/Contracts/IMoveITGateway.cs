@@ -2,8 +2,8 @@
 {
     public interface IMoveITGateway
     {
-        Task<string> Login(string username);
+        Task<Result<string>> Login(string username);
 
-        Task UploadFileToDirectory(byte[] file, string fileName, int directoryId);
+        Task<Result> UploadFileToDirectory(byte[] file, string fileName, int directoryId);
     }
 }

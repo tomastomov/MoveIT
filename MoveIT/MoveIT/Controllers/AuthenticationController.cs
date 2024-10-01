@@ -29,12 +29,15 @@ namespace MoveIT.Controllers
                 return View(model);
             }
 
-            var token = await _gateway.Login(model.Username);
+            var result = await _gateway.Login(model.Username);
 
-            if (token is null)
+            if (result.ErrorMessage is not null)
             {
+                TempData[ERROR_MESSAGE] = result.ErrorMessage;
                 return View(model);
             }
+
+            var token = result.Data;
 
             _contextAccessor.HttpContext.Session.SetString(JWT, token);
 

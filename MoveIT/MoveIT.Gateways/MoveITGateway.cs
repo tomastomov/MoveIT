@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
+using MoveIT.Common.Extensions;
 using MoveIT.Gateways.Contracts;
 using MoveIT.Gateways.Contracts.Models;
 using Newtonsoft.Json;
+using System.Net;
 using System.Net.Http.Headers;
 using System.Text;
 using static MoveIT.Common.Constants;
@@ -22,7 +24,7 @@ namespace MoveIT.Gateways
             _options = options;
         }
 
-        public async Task<string> Login(string username)
+        public async Task<Result<string>> Login(string username)
         {
             var client = _httpClientFactory.CreateClient();
 
@@ -39,17 +41,20 @@ namespace MoveIT.Gateways
 
             if (!response.IsSuccessStatusCode)
             {
-                return null;
+                return Error<string>(response.StatusCode);
             }
 
             var responseContent = await response.Content.ReadAsStringAsync();
 
             var result = JsonConvert.DeserializeObject<LoginResponseModel>(responseContent);
 
-            return result?.AccessToken;
+            return new Result<string>
+            {
+                Data = result.AccessToken
+            };
         }
 
-        public async Task UploadFileToDirectory(byte[] file, string fileName, int directoryId)
+        public async Task<Result> UploadFileToDirectory(byte[] file, string fileName, int directoryId)
         {
             var url = string.Format(_options.Value.UPLOAD_FILE_TO_DIRECTORY_URL, directoryId);
 
@@ -57,7 +62,7 @@ namespace MoveIT.Gateways
 
             using var request = new MultipartFormDataContent();
 
-            request.Add(new ByteArrayContent(file), "file", fileName);
+            request.Add(new ByteArrayContent(file), FILE_REQUEST_PARAM_NAME, fileName);
 
             var token = _contextAccessor.HttpContext.Session.GetString(JWT);
 
@@ -67,8 +72,26 @@ namespace MoveIT.Gateways
 
             if (!response.IsSuccessStatusCode)
             {
-                return;
+                return Error(response.StatusCode);
             }
+
+            return new Result { };
+        }
+
+        private Result<T> Error<T>(HttpStatusCode code)
+        {
+            return new Result<T>
+            {
+                ErrorMessage = code.ToString()
+            };
+        }
+
+        private Result Error(HttpStatusCode code)
+        {
+            return new Result
+            {
+                ErrorMessage = code.ToString()
+            };
         }
     }
 }

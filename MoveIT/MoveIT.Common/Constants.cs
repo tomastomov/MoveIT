@@ -17,5 +17,14 @@
         public const string FILES_CONTROLLER = "Files";
         public const string INDEX_ACTION = "Index";
         public const string HOME_CONTROLLER = "Home";
+        public const string FILE_REQUEST_PARAM_NAME = "file";
+        public const string BAD_REQUEST_ERROR_MESSAGE = "A bad request occurred.Please check the data and try again";
+        public const string FORBIDDEN_ERROR_MESSAGE = "You are not allowed to perform this action";
+        public const string NOT_FOUND_ERROR_MESSAGE = "The action you are trying to perform does not exist";
+        public const string INTERNAL_ERROR_MESSAGE = "Something went wrong on our end. Please try again";
+        public const string UNEXPECTED_ERROR_MESSAGE = "An unexpected error occurred. Please try again";
+        public const string ERROR_MESSAGE = "ErrorMessage";
+        public const string SUCCESS_MESSAGE = "SuccessMessage";
+        public const string FILE_UPLOADED_SUCCESSFULLY_MESSAGE = "File uploaded successfully!";
     }
 }

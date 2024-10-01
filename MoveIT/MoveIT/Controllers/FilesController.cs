@@ -3,6 +3,7 @@ using Microsoft.Extensions.Options;
 using MoveIT.Gateways.Contracts.Models;
 using MoveIT.Models.Files;
 using MoveIT.Services.Contracts;
+using static MoveIT.Common.Constants;
 
 namespace MoveIT.Controllers
 {
@@ -37,6 +38,8 @@ namespace MoveIT.Controllers
                 await model.File.CopyToAsync(memoryStream);
                 return (memoryStream.ToArray(), model.File.FileName);
             }, _options.Value.BASE_FOLDER_ID);
+
+            TempData[SUCCESS_MESSAGE] = FILE_UPLOADED_SUCCESSFULLY_MESSAGE;
 
             return View();
         }
