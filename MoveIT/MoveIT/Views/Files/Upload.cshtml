@@ -1,16 +1,32 @@
 ﻿@model MoveIT.Models.Files.UploadFileRequestModel
 
-<h2>Upload File to MOVEit Transfer</h2>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card mt-5">
+                <div class="card-body">
+                    <h2 class="text-center mb-4">Upload File to MOVEit Transfer</h2>
 
-<form asp-controller="Files" asp-action="Upload" method="post" enctype="multipart/form-data">
-    <div>
-        <label>Select file:</label>
-        <input asp-for="File" type="file" />
+                    <form asp-controller="Files" asp-action="Upload" method="post" enctype="multipart/form-data">
+                        <div class="form-group mb-3">
+                            <label asp-for="File" class="form-label">Select file:</label>
+                            <input asp-for="File" type="file" class="form-control" />
+                            <span asp-validation-for="File" class="text-danger"></span>
+                        </div>
+
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary btn-block">Upload</button>
+                        </div>
+                    </form>
+
+                    @if (ViewBag.Message != null)
+                    {
+                        <div class="alert alert-info mt-3">
+                            @ViewBag.Message
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
     </div>
-    <button type="submit">Upload</button>
-</form>
-
-@if (ViewBag.Message != null)
-{
-    <p>@ViewBag.Message</p>
-}
+</div>
