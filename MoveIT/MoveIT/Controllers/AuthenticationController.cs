@@ -38,7 +38,14 @@ namespace MoveIT.Controllers
 
             _contextAccessor.HttpContext.Session.SetString(JWT, token);
 
-            return RedirectToAction("Upload");
+            return RedirectToAction("Upload", "Files");
+        }
+
+        public IActionResult Logout()
+        {
+            _contextAccessor.HttpContext.Session.Remove(JWT);
+
+            return RedirectToAction("Index", "Home");
         }
     }
 }
