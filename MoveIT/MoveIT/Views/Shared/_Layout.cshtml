@@ -1,4 +1,8 @@
 ﻿<!DOCTYPE html>
+@{
+    bool isAuthenticated = Context.Session.TryGetValue(MoveIT.Common.Constants.JWT, out _);
+}
+
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -22,28 +26,29 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Files" asp-action="Upload">Upload</a>
-                        </li>
+                        @if (isAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Files" asp-action="Upload">Upload</a>
+                            </li>
+                        }
                     </ul>
                     <ul class="navbar-nav ms-auto">
-                        @if (!Context.Session.TryGetValue(MoveIT.Common.Constants.JWT, out _) )
+                        @if (isAuthenticated)
                         {
                             <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Authentication" asp-action="Login">Login</a>
-                        </li>
-                        } else
+                                <form asp-area="" asp-controller="Authentication" asp-action="Logout" method="post" class="form-inline">
+                                    <button type="submit" class="btn btn-link nav-link text-dark" style="padding: 0; border: none; background: none;">
+                                        Logout
+                                    </button>
+                                </form>
+                            </li>
+                        }
+                        else
                         {
                             <li class="nav-item">
-                            <form asp-area="" asp-controller="Authentication" asp-action="Logout" method="post" class="form-inline">
-        <button type="submit" class="btn btn-link nav-link text-dark" style="padding: 0; border: none; background: none;">
-            Logout
-        </button>
-    </form>
-                        </li>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Authentication" asp-action="Login">Login</a>
+                            </li>
                         }
                     </ul>
                 </div>
