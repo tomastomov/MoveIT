@@ -26,7 +26,7 @@ namespace MoveIT.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return View(model);
             }
 
             var token = await _gateway.Login(model.Username);
@@ -38,14 +38,15 @@ namespace MoveIT.Controllers
 
             _contextAccessor.HttpContext.Session.SetString(JWT, token);
 
-            return RedirectToAction("Upload", "Files");
+            return RedirectToAction(UPLOAD_ACTION, FILES_CONTROLLER);
         }
 
+        [HttpPost]
         public IActionResult Logout()
         {
             _contextAccessor.HttpContext.Session.Remove(JWT);
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction(INDEX_ACTION, HOME_CONTROLLER);
         }
     }
 }

@@ -24,8 +24,13 @@ namespace MoveIT.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Upload(UploadFileRequestModel request)
+        public async Task<IActionResult> Upload(UploadFileViewModel request)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(request);
+            }
+
             await _fileService.Upload(async () =>
             {
                 using var memoryStream = new MemoryStream();

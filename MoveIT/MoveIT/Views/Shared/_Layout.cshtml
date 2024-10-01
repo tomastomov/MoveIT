@@ -38,7 +38,11 @@
                         } else
                         {
                             <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Authentication" asp-action="Logout">Logout</a>
+                            <form asp-area="" asp-controller="Authentication" asp-action="Logout" method="post" class="form-inline">
+        <button type="submit" class="btn btn-link nav-link text-dark" style="padding: 0; border: none; background: none;">
+            Logout
+        </button>
+    </form>
                         </li>
                         }
                     </ul>
