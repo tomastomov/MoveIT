@@ -9,5 +9,7 @@
         public string AUTH_URL { get; set; }
 
         public string UPLOAD_FILE_TO_DIRECTORY_URL { get; set; }
+
+        public int BASE_FOLDER_ID { get; set; }
     }
 }

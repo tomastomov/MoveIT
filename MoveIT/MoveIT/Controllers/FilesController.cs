@@ -1,4 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using MoveIT.Gateways.Contracts.Models;
+using MoveIT.Models.Files;
 using MoveIT.Services.Contracts;
 
 namespace MoveIT.Controllers
@@ -6,10 +9,12 @@ namespace MoveIT.Controllers
     public class FilesController : Controller
     {
         private readonly IFileService _fileService;
+        private readonly IOptions<MoveITOptions> _options;
 
-        public FilesController(IFileService fileService)
+        public FilesController(IFileService fileService, IOptions<MoveITOptions> options)
         {
             _fileService = fileService;
+            _options = options;
         }
 
         [HttpGet]
@@ -19,9 +24,14 @@ namespace MoveIT.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Upload(string path)
+        public async Task<IActionResult> Upload(UploadFileRequestModel request)
         {
-            await _fileService.Upload(path);
+            await _fileService.Upload(async () =>
+            {
+                using var memoryStream = new MemoryStream();
+                await request.File.CopyToAsync(memoryStream);
+                return memoryStream.ToArray();
+            }, _options.Value.BASE_FOLDER_ID);
 
             return View();
         }

@@ -14,6 +14,11 @@ builder.Services.AddHttpClient();
 builder.Services.AddTransient<IMoveITGateway, MoveITGateway>();
 builder.Services.AddTransient<IFileService, FileService>();
 builder.Services.Configure<MoveITOptions>(builder.Configuration.GetSection("MoveIT"));
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.Cookie.IsEssential = true;
+});
 
 var app = builder.Build();
 
@@ -29,6 +34,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseSession();
 
 app.UseAuthorization();
 

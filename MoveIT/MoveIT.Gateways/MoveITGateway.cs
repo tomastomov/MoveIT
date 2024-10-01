@@ -26,13 +26,14 @@ namespace MoveIT.Gateways
         {
             var client = _httpClientFactory.CreateClient();
 
-            var credentials = new
+            var formData = new List<KeyValuePair<string, string>>
             {
-                username = _options.Value.API_USER,
-                password = _options.Value.API_PASSWORD
+                new KeyValuePair<string, string>(GRANT_TYPE, GrantType.Password.ToString().ToLower()),
+                new KeyValuePair<string, string>(USERNAME, _options.Value.API_USER),
+                new KeyValuePair<string, string>(PASSWORD, _options.Value.API_PASSWORD)
             };
 
-            var content = new StringContent(JsonConvert.SerializeObject(credentials), Encoding.UTF8, APPLICATION_JSON);
+            var content = new FormUrlEncodedContent(formData);
 
             var response = await client.PostAsync(_options.Value.AUTH_URL, content);
 
@@ -48,9 +49,9 @@ namespace MoveIT.Gateways
             return result?.AccessToken;
         }
 
-        public async Task UploadFileToDirectory(byte[] file, string fileName, string directory)
+        public async Task UploadFileToDirectory(byte[] file, string fileName, int directoryId)
         {
-            var url = string.Format(_options.Value.UPLOAD_FILE_TO_DIRECTORY_URL, directory);
+            var url = string.Format(_options.Value.UPLOAD_FILE_TO_DIRECTORY_URL, directoryId);
 
             var client = _httpClientFactory.CreateClient();
 
@@ -68,11 +69,6 @@ namespace MoveIT.Gateways
             {
                 return;
             }
-        }
-
-        public async Task CreateUser(string username, string password)
-        {
-
         }
     }
 }

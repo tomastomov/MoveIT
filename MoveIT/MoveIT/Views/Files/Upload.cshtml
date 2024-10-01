@@ -1,11 +1,11 @@
-﻿@model MoveIT.Models.Files.UploadFileViewModel
+﻿@model MoveIT.Models.Files.UploadFileRequestModel
 
 <h2>Upload File to MOVEit Transfer</h2>
 
-<form asp-action="Upload" method="post" enctype="multipart/form-data">
+<form asp-controller="Files" asp-action="Upload" method="post" enctype="multipart/form-data">
     <div>
         <label>Select file:</label>
-        <input asp-for="Path" type="file" />
+        <input asp-for="File" type="file" />
     </div>
     <button type="submit">Upload</button>
 </form>

@@ -4,6 +4,6 @@
     {
         Task<string> Login(string username);
 
-        Task UploadFileToDirectory(byte[] file, string fileName, string directory);
+        Task UploadFileToDirectory(byte[] file, string fileName, int directoryId);
     }
 }

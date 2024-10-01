@@ -2,6 +2,6 @@
 {
     public interface IFileService
     {
-        Task Upload(string path);
+        Task Upload(Func<Task<byte[]>> fileReader, int directoryId);
     }
 }
