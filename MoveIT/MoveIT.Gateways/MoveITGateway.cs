@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
+using MoveIT.Common.Contracts;
 using MoveIT.Common.Extensions;
 using MoveIT.Common.Helpers;
 using MoveIT.Gateways.Contracts;
@@ -15,41 +15,37 @@ namespace MoveIT.Gateways
     public class MoveITGateway : IMoveITGateway
     {
         private readonly IHttpClientFactory _httpClientFactory;
-        private readonly IHttpContextAccessor _contextAccessor;
+        private readonly ITokenManager _tokenManager;
         private readonly IOptions<MoveITOptions> _options;
 
-        public MoveITGateway(IHttpClientFactory httpClientFactory, IHttpContextAccessor contextAccessor, IOptions<MoveITOptions> options)
+        public MoveITGateway(IHttpClientFactory httpClientFactory, ITokenManager tokenManager, IOptions<MoveITOptions> options)
         {
             _httpClientFactory = httpClientFactory;
-            _contextAccessor = contextAccessor;
+            _tokenManager = tokenManager;
             _options = options;
         }
 
-        public async Task<Result<string>> Login(string username)
+        public async Task<Result<AuthenticationResponseModel>> Authenticate()
         {
-            var client = _httpClientFactory.CreateClient();
-
             var formData = new List<KeyValuePair<string, string>>
             {
-                new KeyValuePair<string, string>(GRANT_TYPE, GrantType.Password.ToString().ToLower()),
+                new KeyValuePair<string, string>(GRANT_TYPE, GrantType.Password.ToSnakeCaseString()),
                 new KeyValuePair<string, string>(USERNAME, _options.Value.API_USER),
-                new KeyValuePair<string, string>(PASSWORD, _options.Value.API_PASSWORD)
+                new KeyValuePair<string, string>(PASSWORD, _options.Value.API_PASSWORD),
             };
 
-            var content = new FormUrlEncodedContent(formData);
+            return await AuthenticateImpl(formData);
+        }
 
-            var response = await client.PostAsync(_options.Value.AUTH_URL, content);
-
-            if (!response.IsSuccessStatusCode)
+        public async Task<Result<AuthenticationResponseModel>> ReAuthenticate(string refreshToken)
+        {
+            var formData = new List<KeyValuePair<string, string>>
             {
-                return Result<string>.ToError(response.StatusCode.ToMessage());
-            }
+                new KeyValuePair<string, string>(GRANT_TYPE, GrantType.RefreshToken.ToSnakeCaseString()),
+                new KeyValuePair<string, string>(REFRESH_TOKEN, refreshToken)
+            };
 
-            var responseContent = await response.Content.ReadAsStringAsync();
-
-            var result = JsonConvert.DeserializeObject<LoginResponseModel>(responseContent);
-
-            return Result<string>.ToResult(result.AccessToken);
+            return await AuthenticateImpl(formData);
         }
 
         public async Task<Result> UploadFileToDirectory(byte[] file, string fileName, int directoryId)
@@ -62,9 +58,12 @@ namespace MoveIT.Gateways
 
             request.Add(new ByteArrayContent(file), FILE_REQUEST_PARAM_NAME, fileName);
 
-            var token = _contextAccessor.HttpContext.Session.GetString(JWT);
+            var token = _tokenManager.Token;
 
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(BEARER, token);
+            if (token is not null)
+            {
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(BEARER, token.AccessToken);
+            }
 
             var response = await client.PostAsync(url, request);
 
@@ -74,6 +73,26 @@ namespace MoveIT.Gateways
             }
 
             return Result.ToEmptyResult();
+        }
+
+        private async Task<Result<AuthenticationResponseModel>> AuthenticateImpl(List<KeyValuePair<string, string>> formData)
+        {
+            var client = _httpClientFactory.CreateClient();
+
+            var content = new FormUrlEncodedContent(formData);
+
+            var response = await client.PostAsync(_options.Value.AUTH_URL, content);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return Result<AuthenticationResponseModel>.ToError(response.StatusCode.ToMessage());
+            }
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+
+            var result = JsonConvert.DeserializeObject<AuthenticationResponseModel>(responseContent);
+
+            return Result<AuthenticationResponseModel>.ToResult(result);
         }
     }
 }

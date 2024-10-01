@@ -1,6 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@inject ITokenManager tokenManager
+
+<!DOCTYPE html>
 @{
-    bool isAuthenticated = Context.Session.TryGetValue(MoveIT.Common.Constants.JWT, out _);
+    var isAuthenticated = tokenManager.Token != null;
 }
 
 <html lang="en">

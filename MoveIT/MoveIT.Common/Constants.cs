@@ -10,6 +10,7 @@
         public const string PASSWORD = "password";
         public const string ACCESS_TOKEN = "access_token";
         public const string REFRESH_TOKEN = "refresh_token";
+        public const string EXPIRES_IN = "expires_in";
         public const string FILE_REQUIRED_ERROR_MESSAGE = "Please select a file to upload";
         public const string USERNAME_REQUIRED_ERROR_MESSAGE = "Please provide a username";
         public const string PASSWORD_REQUIRED_ERROR_MESSAGE = "Please provide a password";
@@ -26,5 +27,6 @@
         public const string ERROR_MESSAGE = "ErrorMessage";
         public const string SUCCESS_MESSAGE = "SuccessMessage";
         public const string FILE_UPLOADED_SUCCESSFULLY_MESSAGE = "File uploaded successfully!";
+        public const string JWT_EXPIRATION_DATE = "JWT_EXPIRATION_DATE";
     }
 }

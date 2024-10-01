@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using MoveIT.Gateways.Contracts;
+using MoveIT.Common.Contracts;
 using MoveIT.Models.Authentication;
 using MoveIT.Services.Contracts;
 using static MoveIT.Common.Constants;
@@ -8,16 +8,16 @@ namespace MoveIT.Controllers
 {
     public class AuthenticationController : Controller
     {
-        private readonly IHttpContextAccessor _contextAccessor;
         private readonly IAuthenticationService _authenticationService;
+        private readonly ITokenManager _tokenManager;
 
-        public AuthenticationController(IHttpContextAccessor contextAccessor, IAuthenticationService authenticationService)
+        public AuthenticationController(IAuthenticationService authenticationService, ITokenManager tokenManager)
         {
-            _contextAccessor = contextAccessor;
             _authenticationService = authenticationService;
+            _tokenManager = tokenManager;
         }
 
-        public async Task<IActionResult> Login()
+        public IActionResult Login()
         {
             return View();
         }
@@ -44,7 +44,7 @@ namespace MoveIT.Controllers
         [HttpPost]
         public IActionResult Logout()
         {
-            _contextAccessor.HttpContext.Session.Remove(JWT);
+            _tokenManager.DeleteToken();
 
             return RedirectToAction(INDEX_ACTION, HOME_CONTROLLER);
         }

@@ -1,6 +1,9 @@
+using MoveIT.Common;
+using MoveIT.Common.Contracts;
 using MoveIT.Gateways;
 using MoveIT.Gateways.Contracts;
 using MoveIT.Gateways.Contracts.Models;
+using MoveIT.HostedServices;
 using MoveIT.Services;
 using MoveIT.Services.Contracts;
 using static MoveIT.Common.Constants;
@@ -14,19 +17,27 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddHttpClient();
 builder.Services.AddTransient<IMoveITGateway, MoveITGateway>();
 builder.Services.AddTransient<IFileService, FileService>();
+builder.Services.AddSingleton<ITokenManager, TokenManager>();
+
 builder.Services.AddTransient<IAuthenticationService, AuthenticationService>(svc =>
 {
-    var contextAccessor = svc.GetRequiredService<IHttpContextAccessor>();
     var gateway = svc.GetRequiredService<IMoveITGateway>();
+    var tokenManager = svc.GetRequiredService<ITokenManager>();
 
-    return new AuthenticationService(gateway, (token) => contextAccessor.HttpContext.Session.SetString(JWT, token));
+    return new AuthenticationService(gateway, (tokenData) =>
+    {
+        tokenManager.SetToken(tokenData.AccessToken, tokenData.RefreshToken, tokenData.ExpiresIn);    
+    });
 });
+
 builder.Services.Configure<MoveITOptions>(builder.Configuration.GetSection("MoveIT"));
 builder.Services.AddSession(options =>
 {
     options.IdleTimeout = TimeSpan.FromMinutes(30);
     options.Cookie.IsEssential = true;
 });
+
+builder.Services.AddHostedService<TokenRefresherService>();
 
 var app = builder.Build();
 
