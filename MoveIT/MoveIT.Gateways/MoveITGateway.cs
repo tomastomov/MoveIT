@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using MoveIT.Common.Extensions;
+using MoveIT.Common.Helpers;
 using MoveIT.Gateways.Contracts;
 using MoveIT.Gateways.Contracts.Models;
 using Newtonsoft.Json;
@@ -41,17 +42,14 @@ namespace MoveIT.Gateways
 
             if (!response.IsSuccessStatusCode)
             {
-                return Error<string>(response.StatusCode);
+                return Result<string>.ToError(response.StatusCode.ToMessage());
             }
 
             var responseContent = await response.Content.ReadAsStringAsync();
 
             var result = JsonConvert.DeserializeObject<LoginResponseModel>(responseContent);
 
-            return new Result<string>
-            {
-                Data = result.AccessToken
-            };
+            return Result<string>.ToResult(result.AccessToken);
         }
 
         public async Task<Result> UploadFileToDirectory(byte[] file, string fileName, int directoryId)
@@ -72,26 +70,10 @@ namespace MoveIT.Gateways
 
             if (!response.IsSuccessStatusCode)
             {
-                return Error(response.StatusCode);
+                return Result.ToVoidError(response.StatusCode.ToMessage());
             }
 
-            return new Result { };
-        }
-
-        private Result<T> Error<T>(HttpStatusCode code)
-        {
-            return new Result<T>
-            {
-                ErrorMessage = code.ToString()
-            };
-        }
-
-        private Result Error(HttpStatusCode code)
-        {
-            return new Result
-            {
-                ErrorMessage = code.ToString()
-            };
+            return Result.ToEmptyResult();
         }
     }
 }

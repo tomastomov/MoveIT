@@ -25,6 +25,13 @@
                             @msg
                         </div>
                     }
+
+                    @if (TempData.TryGetValue(ERROR_MESSAGE, out var errorMessage))
+                    {
+                        <div class="alert alert-danger mt-3">
+                            @errorMessage
+                        </div>
+                    }
                 </div>
             </div>
         </div>

@@ -1,19 +1,20 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MoveIT.Gateways.Contracts;
 using MoveIT.Models.Authentication;
+using MoveIT.Services.Contracts;
 using static MoveIT.Common.Constants;
 
 namespace MoveIT.Controllers
 {
     public class AuthenticationController : Controller
     {
-        private readonly IMoveITGateway _gateway;
         private readonly IHttpContextAccessor _contextAccessor;
+        private readonly IAuthenticationService _authenticationService;
 
-        public AuthenticationController(IMoveITGateway gateway, IHttpContextAccessor contextAccessor)
+        public AuthenticationController(IHttpContextAccessor contextAccessor, IAuthenticationService authenticationService)
         {
-            _gateway = gateway;
             _contextAccessor = contextAccessor;
+            _authenticationService = authenticationService;
         }
 
         public async Task<IActionResult> Login()
@@ -29,17 +30,13 @@ namespace MoveIT.Controllers
                 return View(model);
             }
 
-            var result = await _gateway.Login(model.Username);
+            var result = await _authenticationService.Authenticate();
 
             if (result.ErrorMessage is not null)
             {
                 TempData[ERROR_MESSAGE] = result.ErrorMessage;
                 return View(model);
             }
-
-            var token = result.Data;
-
-            _contextAccessor.HttpContext.Session.SetString(JWT, token);
 
             return RedirectToAction(UPLOAD_ACTION, FILES_CONTROLLER);
         }

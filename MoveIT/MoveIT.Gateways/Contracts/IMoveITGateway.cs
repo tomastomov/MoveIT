@@ -1,4 +1,6 @@
-﻿namespace MoveIT.Gateways.Contracts
+﻿using MoveIT.Common.Helpers;
+
+namespace MoveIT.Gateways.Contracts
 {
     public interface IMoveITGateway
     {

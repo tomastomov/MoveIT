@@ -3,6 +3,7 @@ using MoveIT.Gateways.Contracts;
 using MoveIT.Gateways.Contracts.Models;
 using MoveIT.Services;
 using MoveIT.Services.Contracts;
+using static MoveIT.Common.Constants;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +14,13 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddHttpClient();
 builder.Services.AddTransient<IMoveITGateway, MoveITGateway>();
 builder.Services.AddTransient<IFileService, FileService>();
+builder.Services.AddTransient<IAuthenticationService, AuthenticationService>(svc =>
+{
+    var contextAccessor = svc.GetRequiredService<IHttpContextAccessor>();
+    var gateway = svc.GetRequiredService<IMoveITGateway>();
+
+    return new AuthenticationService(gateway, (token) => contextAccessor.HttpContext.Session.SetString(JWT, token));
+});
 builder.Services.Configure<MoveITOptions>(builder.Configuration.GetSection("MoveIT"));
 builder.Services.AddSession(options =>
 {
