@@ -12,10 +12,10 @@ namespace MoveIT.Services
             _gateway = gateway;
         }
 
-        public async Task Upload(Func<Task<byte[]>> fileReader, int directoryId)
+        public async Task Upload(Func<Task<(byte[] File, string FileName)>> fileReader, int directoryId)
         {
-            var file = await fileReader();
-            await _gateway.UploadFileToDirectory(file, "test", directoryId);
+            var fileInfo = await fileReader();
+            await _gateway.UploadFileToDirectory(fileInfo.File, fileInfo.FileName, directoryId);
             return;
         }
     }
