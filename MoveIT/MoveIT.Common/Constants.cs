@@ -16,6 +16,8 @@
         public const string PASSWORD_REQUIRED_ERROR_MESSAGE = "Please provide a password";
         public const string UPLOAD_ACTION = "Upload";
         public const string FILES_CONTROLLER = "Files";
+        public const string AUTHENTICATION_CONTROLLER = "Authentication";
+        public const string LOGIN_ACTION = "Login";
         public const string INDEX_ACTION = "Index";
         public const string HOME_CONTROLLER = "Home";
         public const string FILE_REQUEST_PARAM_NAME = "file";
@@ -29,5 +31,6 @@
         public const string SUCCESS_MESSAGE = "SuccessMessage";
         public const string FILE_UPLOADED_SUCCESSFULLY_MESSAGE = "File uploaded successfully!";
         public const string JWT_EXPIRATION_DATE = "JWT_EXPIRATION_DATE";
+        public const string HAS_TOKEN_POLICY = "HasTokenPolicy";
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using MoveIT.Gateways.Contracts.Models;
 using MoveIT.Models.Files;
@@ -19,12 +20,14 @@ namespace MoveIT.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = HAS_TOKEN_POLICY)]
         public IActionResult Upload()
         {
             return View();
         }
 
         [HttpPost]
+        [Authorize(Policy = HAS_TOKEN_POLICY)]
         public async Task<IActionResult> Upload(UploadFileViewModel model)
         {
             if (!ModelState.IsValid)
