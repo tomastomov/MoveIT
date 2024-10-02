@@ -29,11 +29,6 @@ builder.Services.AddTransient<IAuthenticationService, AuthenticationService>(svc
 });
 
 builder.Services.Configure<MoveITOptions>(builder.Configuration.GetSection("MoveIT"));
-builder.Services.AddSession(options =>
-{
-    options.IdleTimeout = TimeSpan.FromMinutes(30);
-    options.Cookie.IsEssential = true;
-});
 
 builder.Services.AddHostedService<TokenRefresherService>();
 
@@ -49,8 +44,6 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
-app.UseSession();
 
 app.UseAuthorization();
 

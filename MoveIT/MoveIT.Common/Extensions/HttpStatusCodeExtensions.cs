@@ -17,6 +17,8 @@ namespace MoveIT.Common.Extensions
                     return NOT_FOUND_ERROR_MESSAGE;
                 case HttpStatusCode.InternalServerError:
                     return INTERNAL_ERROR_MESSAGE;
+                case HttpStatusCode.Conflict:
+                    return ALREADY_EXISTS_MESSAGE;
                 default:
                     return UNEXPECTED_ERROR_MESSAGE;
             }

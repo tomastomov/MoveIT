@@ -23,6 +23,7 @@
         public const string FORBIDDEN_ERROR_MESSAGE = "You are not allowed to perform this action";
         public const string NOT_FOUND_ERROR_MESSAGE = "The action you are trying to perform does not exist";
         public const string INTERNAL_ERROR_MESSAGE = "Something went wrong on our end. Please try again";
+        public const string ALREADY_EXISTS_MESSAGE = "The resource already exists";
         public const string UNEXPECTED_ERROR_MESSAGE = "An unexpected error occurred. Please try again";
         public const string ERROR_MESSAGE = "ErrorMessage";
         public const string SUCCESS_MESSAGE = "SuccessMessage";
