@@ -1,15 +1,12 @@
 ﻿using Moq;
 using NUnit.Framework;
-using System;
 using System.Net;
 using System.Net.Http;
-using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using MoveIT.Gateways;
 using MoveIT.Gateways.Contracts.Models;
 using MoveIT.Common.Contracts;
-using Moq.Protected;
 using MoveIT.Common.Extensions;
 using MoveIT.Common.Contracts.Models;
 using MoveIT.Tests.GatewaysTests;
