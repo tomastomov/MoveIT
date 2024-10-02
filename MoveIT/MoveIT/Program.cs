@@ -6,7 +6,6 @@ using MoveIT.Gateways.Contracts.Models;
 using MoveIT.HostedServices;
 using MoveIT.Services;
 using MoveIT.Services.Contracts;
-using static MoveIT.Common.Constants;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,7 +17,6 @@ builder.Services.AddHttpClient();
 builder.Services.AddTransient<IMoveITGateway, MoveITGateway>();
 builder.Services.AddTransient<IFileService, FileService>();
 builder.Services.AddSingleton<ITokenManager, TokenManager>();
-
 builder.Services.AddTransient<IAuthenticationService, AuthenticationService>(svc =>
 {
     var gateway = svc.GetRequiredService<IMoveITGateway>();
@@ -41,11 +39,9 @@ builder.Services.AddHostedService<TokenRefresherService>();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 

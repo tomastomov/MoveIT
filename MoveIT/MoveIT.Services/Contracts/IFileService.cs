@@ -1,7 +1,9 @@
-﻿namespace MoveIT.Services.Contracts
+﻿using MoveIT.Common.Helpers;
+
+namespace MoveIT.Services.Contracts
 {
     public interface IFileService
     {
-        Task Upload(Func<Task<(byte[] File, string FileName)>> fileReader, int directoryId);
+        Task<Result> Upload(Func<Task<(byte[] File, string FileName)>> fileReader, int directoryId);
     }
 }
