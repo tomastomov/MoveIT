@@ -7,7 +7,6 @@ using MoveIT.Gateways.Contracts.Models;
 using Newtonsoft.Json;
 using System.Net;
 using System.Net.Http.Headers;
-using System.Text;
 using static MoveIT.Common.Constants;
 
 namespace MoveIT.Gateways
